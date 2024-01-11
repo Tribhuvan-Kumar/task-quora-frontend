@@ -19,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 import LoginImage from "@/assets/login.jpg";
+import { useEffect, useState } from "react";
 
 const FormSchema = z.object({
   email: z.string().email({
@@ -36,8 +37,24 @@ const FormSchema = z.object({
 });
 
 const LoginPage = () => {
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState<boolean>(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (document.cookie.includes("accessToken")) {
+      setIsUserLoggedIn(true);
+
+      setTimeout(() => {
+        toast({
+          description: "You are already logged in!",
+        });
+      }, 0);
+      navigate("/");
+    } else {
+      setIsUserLoggedIn(false);
+    }
+  }, []);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -60,11 +77,10 @@ const LoginPage = () => {
         }
       );
 
-      navigate("/");
-
       toast({
         description: response.data.message,
       });
+      navigate("/");
     } catch (error) {
       toast({
         variant: "destructive",
@@ -75,67 +91,69 @@ const LoginPage = () => {
 
   return (
     <>
-      <div className="flex items-center justify-evenly h-screen">
-        <img src={LoginImage} className="hidden lg:block lg:w-4/12" alt=" " />
-        <div className="-mt-40 lg:mt-0">
-          <p className="font-extrabold text-3xl text-center">Login!</p>
-          <Separator className="my-5" />
+      {!isUserLoggedIn && (
+        <div className="flex items-center justify-evenly h-screen">
+          <img src={LoginImage} className="hidden lg:block lg:w-4/12" alt=" " />
+          <div className="-mt-40 lg:mt-0">
+            <p className="font-extrabold text-3xl text-center">Login!</p>
+            <Separator className="my-5" />
 
-          <div className="w-72 sm:w-96">
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="flex flex-col gap-3"
-              >
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter your email" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Password</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Confirm a password" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button type="submit" className="mt-5">
-                  Submit
-                </Button>
-              </form>
-            </Form>
+            <div className="w-72 sm:w-96">
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="flex flex-col gap-3"
+                >
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Enter your email" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Password</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Confirm a password" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button type="submit" className="mt-5">
+                    Submit
+                  </Button>
+                </form>
+              </Form>
 
-            <div className="flex items-center justify-center">
-              <Separator className="my-10 w-20 sm:w-48" />
-              <p className="mx-5">OR</p>
-              <Separator className="my-10 w-20 sm:w-48" />
-            </div>
+              <div className="flex items-center justify-center">
+                <Separator className="my-10 w-20 sm:w-48" />
+                <p className="mx-5">OR</p>
+                <Separator className="my-10 w-20 sm:w-48" />
+              </div>
 
-            <div>
-              <p>
-                Don't have an account?{" "}
-                <Link to="/signup" className="ms-3 font-medium text-blue-700">
-                  Signup now
-                </Link>
-              </p>
+              <div>
+                <p>
+                  Don't have an account?{" "}
+                  <Link to="/signup" className="ms-3 font-medium text-blue-700">
+                    Signup now
+                  </Link>
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 };

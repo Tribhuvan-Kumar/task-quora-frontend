@@ -7,9 +7,39 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast";
 
 const HomeNavbar = () => {
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  const handleUserLogOut = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/user/logout",
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+
+      setTimeout(() => {
+        toast({
+          description: response.data.message,
+        });
+      }, 0);
+
+      navigate("/login");
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        description: "Uh oh! Unable to logout. Please try again later!",
+      });
+    }
+  };
+
   return (
     <>
       <div className="flex items-center justify-between py-3 px-5 sm:px-16">
@@ -33,11 +63,11 @@ const HomeNavbar = () => {
               <DropdownMenuItem className="cursor-pointer">
                 Profile
               </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                New Post
-              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer">
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={handleUserLogOut}
+              >
                 Log out
               </DropdownMenuItem>
             </DropdownMenuContent>
