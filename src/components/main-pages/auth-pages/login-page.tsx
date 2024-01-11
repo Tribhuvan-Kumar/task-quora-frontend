@@ -93,7 +93,7 @@ const LoginPage = () => {
     <>
       {!isUserLoggedIn && (
         <div className="flex items-center justify-evenly h-screen">
-          <img src={LoginImage} className="hidden lg:block lg:w-4/12" alt=" " />
+          <img src={LoginImage} className="hidden lg:block lg:w-4/12 rounded-lg" alt=" " />
           <div className="-mt-40 lg:mt-0">
             <p className="font-extrabold text-3xl text-center">Login!</p>
             <Separator className="my-5" />

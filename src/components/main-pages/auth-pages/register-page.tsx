@@ -170,7 +170,7 @@ const RegisterPage = () => {
           </div>
           <img
             src={SignUpImage}
-            className="hidden lg:block lg:w-4/12"
+            className="hidden lg:block lg:w-4/12 rounded-lg"
             alt=" "
           />
         </div>
