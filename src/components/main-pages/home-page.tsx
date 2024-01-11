@@ -10,19 +10,19 @@ const HomePage = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // const cookies = document.cookie;
+    const cookies = document.cookie;
 
-    // if (cookies.includes("accessToken")) {
-    //   setIsLogin(true);
-    // } else {
-    //   setIsLogin(false);
-    //   navigate("/login");
+    if (cookies.includes("accessToken")) {
+      setIsLogin(true);
+    } else {
+      setIsLogin(false);
+      navigate("/login");
 
-    //   toast({
-    //     variant: "destructive",
-    //     description: "Uh oh! Unauthorized request.",
-    //   });
-    // }
+      toast({
+        variant: "destructive",
+        description: "Uh oh! Unauthorized request.",
+      });
+    }
   }, []);
 
   return (
