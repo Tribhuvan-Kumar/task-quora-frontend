@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { MoreVertical } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
+import HomeEditCardDiv from "./edit-card-post";
+import { Badge } from "@/components/ui/badge";
 
 interface EachPostDivProps {
   singlePost: {
@@ -11,6 +13,7 @@ interface EachPostDivProps {
     title: string;
     description: string;
     updatedAt: string;
+    isCompleted: boolean;
   };
   onPostAdded: (
     posts: {
@@ -23,9 +26,10 @@ interface EachPostDivProps {
 }
 
 const EachPostDiv = ({ singlePost, onPostAdded }: EachPostDivProps) => {
-  const { _id, title, description, updatedAt } = singlePost;
+  const { _id, title, description, updatedAt, isCompleted } = singlePost;
   const [timeAgo, setTimeAgo] = useState<string>("");
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [isEditCardOpen, setIsEditCardOpen] = useState<boolean>(false);
   const { toast } = useToast();
 
   const newDescription = description.substring(0, 25);
@@ -41,11 +45,14 @@ const EachPostDiv = ({ singlePost, onPostAdded }: EachPostDivProps) => {
     const timeDifference = currentDate.getTime() - updateDate.getTime();
     const minutesDifference = Math.floor(timeDifference / (1000 * 60));
     const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
+    const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 
     if (minutesDifference < 60) {
       setTimeAgo(`${minutesDifference} minutes ago`);
-    } else {
+    } else if (hoursDifference < 24) {
       setTimeAgo(`${hoursDifference} hours ago`);
+    } else {
+      setTimeAgo(`${daysDifference} days ago`);
     }
   }, []);
 
@@ -97,6 +104,10 @@ const EachPostDiv = ({ singlePost, onPostAdded }: EachPostDivProps) => {
     }
   }
 
+  const handleEditCardOpen = () => {
+    setIsEditCardOpen(!isEditCardOpen);
+  };
+
   return (
     <>
       <Card className="w-80 h-36 sm:w-96">
@@ -110,12 +121,7 @@ const EachPostDiv = ({ singlePost, onPostAdded }: EachPostDivProps) => {
               <MoreVertical className="cursor-pointer" />
               {isMenuOpen && (
                 <div className="absolute right-0 px-5 py-3 flex flex-col items-start gap-2 border rounded-lg bg-white dark:bg-black">
-                  <p
-                    className="cursor-pointer"
-                    onClick={() => {
-                      console.log("edit");
-                    }}
-                  >
+                  <p className="cursor-pointer" onClick={handleEditCardOpen}>
                     Edit
                   </p>
                   <Separator />
@@ -129,10 +135,25 @@ const EachPostDiv = ({ singlePost, onPostAdded }: EachPostDivProps) => {
           <Separator className="mb-2" />
           <div className="flex flex-col items-start gap-8">
             <p>{newDescription} ...</p>
-            <p className="text-[10px]">{timeAgo}</p>
+            <div className="flex items-center gap-5">
+              {isCompleted === true ? (
+                <Badge className="text-[10px]">Completed</Badge>
+              ) : (
+                <Badge className="text-[10px]">Pending</Badge>
+              )}
+              <p className="text-[10px]">{timeAgo}</p>
+            </div>
           </div>
         </CardHeader>
       </Card>
+
+      {isEditCardOpen && (
+        <HomeEditCardDiv
+          setIsEditCardOpen={setIsEditCardOpen}
+          onPostAdded={onPostAdded}
+          singlePost={singlePost}
+        />
+      )}
     </>
   );
 };

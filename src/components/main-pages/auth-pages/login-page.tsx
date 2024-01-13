@@ -42,7 +42,7 @@ const LoginPage = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (document.cookie.includes("accessToken")) {
+    if (document.cookie.includes("newaccessToken")) {
       setIsUserLoggedIn(true);
 
       setTimeout(() => {
@@ -64,6 +64,24 @@ const LoginPage = () => {
     },
   });
 
+  // const regenerateTokens = async () => {
+  //   try {
+  //     const response = await axios.post(
+  //       "http://localhost:8000/api/v1/user/refresh-token",
+  //       {},
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         withCredentials: true,
+  //       }
+  //     );
+  //     console.log(response);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     try {
       const response = await axios.post(
@@ -82,6 +100,7 @@ const LoginPage = () => {
       });
       navigate("/");
     } catch (error) {
+      // regenerateTokens();
       toast({
         variant: "destructive",
         description: "Uh oh! Unable to login. Please try again later!",
@@ -93,7 +112,11 @@ const LoginPage = () => {
     <>
       {!isUserLoggedIn && (
         <div className="flex items-center justify-evenly h-screen">
-          <img src={LoginImage} className="hidden lg:block lg:w-4/12 rounded-lg" alt=" " />
+          <img
+            src={LoginImage}
+            className="hidden lg:block lg:w-4/12 rounded-3xl"
+            alt=" "
+          />
           <div className="-mt-40 lg:mt-0">
             <p className="font-extrabold text-3xl text-center">Login!</p>
             <Separator className="my-5" />
