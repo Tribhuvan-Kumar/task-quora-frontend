@@ -42,7 +42,7 @@ const LoginPage = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (document.cookie.includes("newaccessToken")) {
+    if (document.cookie.includes("refreshToken")) {
       setIsUserLoggedIn(true);
 
       setTimeout(() => {
@@ -64,24 +64,6 @@ const LoginPage = () => {
     },
   });
 
-  // const regenerateTokens = async () => {
-  //   try {
-  //     const response = await axios.post(
-  //       "http://localhost:8000/api/v1/user/refresh-token",
-  //       {},
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         withCredentials: true,
-  //       }
-  //     );
-  //     console.log(response);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     try {
       const response = await axios.post(
@@ -100,7 +82,6 @@ const LoginPage = () => {
       });
       navigate("/");
     } catch (error) {
-      // regenerateTokens();
       toast({
         variant: "destructive",
         description: "Uh oh! Unable to login. Please try again later!",

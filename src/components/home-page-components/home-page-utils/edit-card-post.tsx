@@ -27,6 +27,7 @@ interface EachcardProps {
       title: string;
       description: string;
       updatedAt: string;
+      isCompleted: boolean;
     }[]
   ) => void;
   singlePost: {

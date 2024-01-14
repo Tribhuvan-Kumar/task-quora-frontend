@@ -27,6 +27,7 @@ interface AddNewPostProps {
       title: string;
       description: string;
       updatedAt: string;
+      isCompleted: boolean;
     }[]
   ) => void;
 }

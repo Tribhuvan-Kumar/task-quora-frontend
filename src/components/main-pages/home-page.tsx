@@ -12,7 +12,7 @@ const HomePage = () => {
   useEffect(() => {
     const cookies = document.cookie;
 
-    if (cookies.includes("accessToken")) {
+    if (cookies.includes("refreshToken")) {
       setIsLogin(true);
     } else {
       setIsLogin(false);

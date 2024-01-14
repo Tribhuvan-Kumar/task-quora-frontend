@@ -45,7 +45,7 @@ const RegisterPage = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (document.cookie.includes("accessToken")) {
+    if (document.cookie.includes("refreshToken")) {
       setIsUserLoggedIn(true);
 
       setTimeout(() => {

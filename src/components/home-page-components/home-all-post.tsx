@@ -11,6 +11,7 @@ interface PostDesign {
   title: string;
   description: string;
   updatedAt: string;
+  isCompleted: boolean;
 }
 
 const HomePageAllPost = () => {

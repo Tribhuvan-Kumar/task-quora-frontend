@@ -18,9 +18,10 @@ interface EachPostDivProps {
   onPostAdded: (
     posts: {
       _id: number;
-      title: string;
-      description: string;
-      updatedAt: string;
+    title: string;
+    description: string;
+    updatedAt: string;
+    isCompleted: boolean;
     }[]
   ) => void;
 }
