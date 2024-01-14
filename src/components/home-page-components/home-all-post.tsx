@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
 import { Separator } from "@/components/ui/separator";
 import AddNewPost from "./home-page-utils/add-new-post";
 import EachPostDiv from "./home-page-utils/each-post";
@@ -17,8 +16,6 @@ interface PostDesign {
 const HomePageAllPost = () => {
   const [isPost, setIsPost] = useState<boolean>(false);
   const [allPost, setAllPost] = useState<PostDesign[]>([]);
-
-  const { toast } = useToast();
 
   useEffect(() => {
     async function getPostOnRefresh() {
@@ -37,10 +34,6 @@ const HomePageAllPost = () => {
         setIsPost(true);
       } catch (error) {
         setIsPost(false);
-        toast({
-          variant: "destructive",
-          description: "Uh oh! Network error. Please try again later!",
-        });
       }
     }
 
