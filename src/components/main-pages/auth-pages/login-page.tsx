@@ -44,13 +44,13 @@ const LoginPage = () => {
   useEffect(() => {
     if (document.cookie.includes("refreshToken")) {
       setIsUserLoggedIn(true);
+      navigate("/");
 
       setTimeout(() => {
         toast({
           description: "You are already logged in!",
         });
       }, 0);
-      navigate("/");
     } else {
       setIsUserLoggedIn(false);
     }
@@ -77,10 +77,11 @@ const LoginPage = () => {
         }
       );
 
+      navigate("/");
+
       toast({
         description: response.data.message,
       });
-      navigate("/");
     } catch (error) {
       toast({
         variant: "destructive",
