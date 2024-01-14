@@ -6,6 +6,7 @@ import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
 import HomeEditCardDiv from "./edit-card-post";
 import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router-dom";
 
 interface EachPostDivProps {
   singlePost: {
@@ -18,10 +19,10 @@ interface EachPostDivProps {
   onPostAdded: (
     posts: {
       _id: number;
-    title: string;
-    description: string;
-    updatedAt: string;
-    isCompleted: boolean;
+      title: string;
+      description: string;
+      updatedAt: string;
+      isCompleted: boolean;
     }[]
   ) => void;
 }
@@ -32,6 +33,7 @@ const EachPostDiv = ({ singlePost, onPostAdded }: EachPostDivProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isEditCardOpen, setIsEditCardOpen] = useState<boolean>(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const newDescription = description.substring(0, 25);
   const phoneScreenTitle =
@@ -109,9 +111,15 @@ const EachPostDiv = ({ singlePost, onPostAdded }: EachPostDivProps) => {
     setIsEditCardOpen(!isEditCardOpen);
   };
 
+  const handleRedirectToPersonalTask = () => {
+    navigate(`/personal-task/${_id}`);
+    setIsMenuOpen(false);
+    setIsEditCardOpen(false);
+  };
+
   return (
     <>
-      <Card className="w-80 h-36 sm:w-96">
+      <Card className="w-80 h-36 sm:w-96 select-none">
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="block sm:hidden">
@@ -128,6 +136,13 @@ const EachPostDiv = ({ singlePost, onPostAdded }: EachPostDivProps) => {
                   <Separator />
                   <p className="cursor-pointer" onClick={handleDeletePost}>
                     Delete
+                  </p>
+                  <Separator />
+                  <p
+                    className="cursor-pointer"
+                    onClick={handleRedirectToPersonalTask}
+                  >
+                    View
                   </p>
                 </div>
               )}
